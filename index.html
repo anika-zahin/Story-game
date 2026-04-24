@@ -3,41 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Story Game</title>
+    <title>Infinite Tales</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+
+    <!-- Particle canvas (behind everything) -->
+    <canvas id="bg-canvas"></canvas>
     <div id="noise"></div>
 
     <div id="app">
 
-      <!-- THEME SCREEN -->
-      <div id="theme-screen">
+      <!-- ═══════════════════════════════════════
+           SCREEN 1 — THEME PICKER
+      ════════════════════════════════════════ -->
+      <div id="theme-screen" class="screen active">
         <div id="title-block">
-          <p class="subtitle">AN AI-POWERED ADVENTURE</p>
-          <h1>INFINITE<br/>TALES</h1>
-          <p class="tagline">Every choice rewrites the world.</p>
+          <p class="subtitle" data-animate>An AI-Powered Adventure</p>
+          <h1 data-animate>
+            <span class="word">Infinite</span><br/>
+            <span class="word">Tales</span>
+          </h1>
+          <p class="tagline" data-animate>Every choice rewrites the world.</p>
+          <div class="title-line" data-animate></div>
         </div>
+
         <div id="theme-buttons">
-          <button class="theme-btn" data-theme="Fantasy" onclick="startGame('Fantasy')">
+          <button class="theme-btn" data-animate data-theme="Fantasy" onclick="startGame('Fantasy')">
             <span class="theme-icon">⚔️</span>
             <span class="theme-label">Fantasy</span>
             <span class="theme-desc">Magic, monsters & myth</span>
           </button>
-          <button class="theme-btn" data-theme="Horror" onclick="startGame('Horror')">
+          <button class="theme-btn" data-animate data-theme="Horror" onclick="startGame('Horror')">
             <span class="theme-icon">👁️</span>
             <span class="theme-label">Horror</span>
             <span class="theme-desc">Dread, dark & unknown</span>
           </button>
-          <button class="theme-btn" data-theme="Sci-Fi" onclick="startGame('Sci-Fi')">
+          <button class="theme-btn" data-animate data-theme="Sci-Fi" onclick="startGame('Sci-Fi')">
             <span class="theme-icon">🛸</span>
             <span class="theme-label">Sci-Fi</span>
             <span class="theme-desc">Stars, tech & survival</span>
           </button>
-          <button class="theme-btn" data-theme="Mystery" onclick="startGame('Mystery')">
+          <button class="theme-btn" data-animate data-theme="Mystery" onclick="startGame('Mystery')">
             <span class="theme-icon">🕯️</span>
             <span class="theme-label">Mystery</span>
             <span class="theme-desc">Clues, secrets & lies</span>
@@ -45,31 +54,60 @@
         </div>
       </div>
 
-      <!-- GAME SCREEN -->
-      <div id="game-screen" class="hidden">
+      <!-- ═══════════════════════════════════════
+           SCREEN 2 — GAME
+      ════════════════════════════════════════ -->
+      <div id="game-screen" class="screen hidden">
+
         <header id="game-header">
-          <div id="game-title">INFINITE TALES</div>
+          <div id="game-title">Infinite Tales</div>
           <div id="header-right">
             <span id="theme-tag"></span>
             <button id="restart-btn" onclick="restartGame()">↩ Restart</button>
           </div>
         </header>
 
+        <!-- Progress bar -->
+        <div id="progress-bar-wrap">
+          <span id="progress-label">Fate</span>
+          <div id="progress-track">
+            <div id="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
         <div id="game-body">
-          <!-- Story history sidebar -->
+          <!-- Sidebar -->
           <aside id="history-panel">
-            <p class="history-label">YOUR PATH</p>
+            <p class="history-label">Your Path</p>
             <ul id="history-list"></ul>
           </aside>
 
-          <!-- Main story area -->
+          <!-- Main -->
           <main id="story-area">
             <div id="story-box">
+              <span class="ornament">· · ·</span>
+              <span class="story-box-corner tr"></span>
+              <span class="story-box-corner bl"></span>
               <p id="story-text"></p>
             </div>
             <div id="choices"></div>
           </main>
         </div>
+
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           SCREEN 3 — ENDING
+      ════════════════════════════════════════ -->
+      <div id="ending-screen" class="screen hidden">
+        <h2>Your Story Ends</h2>
+        <div class="ending-ornament">· · · · ·</div>
+        <div id="summary-box">
+          <span class="story-box-corner tr"></span>
+          <span class="story-box-corner bl"></span>
+          <p id="summary-text"></p>
+        </div>
+        <button id="play-again-btn" onclick="restartGame()">Play Again</button>
       </div>
 
     </div>
