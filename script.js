@@ -217,8 +217,8 @@ async function generateScene(playerAction) {
       }
     );
     const data = await res.json();
-    if (data.error && (data.error.code === 429 || data.error.status === 'RESOURCE_EXHAUSTED')) {
-      throw new Error('Gemini quota exceeded');
+    if (!res.ok || data.error || !data.candidates || !data.candidates[0]) {
+      throw new Error(`Gemini error: ${data.error?.message || res.status}`);
     }
     raw = data.candidates[0].content.parts[0].text.trim();
     console.log('✅ Used Gemini');
