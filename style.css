@@ -1,0 +1,401 @@
+/* =========================================
+   INFINITE TALES — AI Story Game
+   Dark Gothic × Editorial aesthetic
+   ========================================= */
+
+:root {
+  --bg: #080808;
+  --surface: #111111;
+  --surface-2: #181818;
+  --border: #2a2a2a;
+  --border-hover: #555;
+  --text: #e2d9c8;
+  --text-muted: #6b6459;
+  --text-dim: #3a3530;
+  --gold: #c9a84c;
+  --gold-light: #e8c97e;
+  --red: #8b2020;
+  --blue: #1a3a5c;
+  --green: #1a3a2a;
+  --purple: #2a1a3a;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grain texture overlay */
+#noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* =========================================
+   THEME SCREEN
+   ========================================= */
+
+#theme-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  position: relative;
+}
+
+#theme-screen::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, #1a1208 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 80%, #0a0a1a 0%, transparent 60%);
+  pointer-events: none;
+}
+
+#title-block {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.subtitle {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+#title-block h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-shadow:
+    0 0 80px rgba(201, 168, 76, 0.15),
+    0 2px 4px rgba(0,0,0,0.8);
+  margin-bottom: 1.5rem;
+}
+
+.tagline {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+#theme-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+}
+
+.theme-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  text-align: left;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.theme-btn[data-theme="Fantasy"]::after { background: radial-gradient(circle at bottom right, rgba(201,168,76,0.08), transparent 70%); }
+.theme-btn[data-theme="Horror"]::after  { background: radial-gradient(circle at bottom right, rgba(139,32,32,0.12), transparent 70%); }
+.theme-btn[data-theme="Sci-Fi"]::after  { background: radial-gradient(circle at bottom right, rgba(26,58,92,0.2), transparent 70%); }
+.theme-btn[data-theme="Mystery"]::after { background: radial-gradient(circle at bottom right, rgba(42,26,58,0.2), transparent 70%); }
+
+.theme-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.theme-btn:hover::after {
+  opacity: 1;
+}
+
+.theme-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.theme-label {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+.theme-desc {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   GAME SCREEN
+   ========================================= */
+
+#game-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#game-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+#header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#theme-tag {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+#restart-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.35rem 0.85rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+#restart-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+#game-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  flex: 1;
+  min-height: calc(100vh - 57px);
+}
+
+/* ---- Sidebar ---- */
+#history-panel {
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 1rem;
+  background: var(--surface);
+  overflow-y: auto;
+}
+
+.history-label {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+
+#history-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#history-list li {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.5rem 0.75rem;
+  border-left: 2px solid var(--border);
+  line-height: 1.4;
+  transition: border-color 0.2s;
+}
+
+#history-list li:last-child {
+  border-left-color: var(--gold);
+  color: var(--text);
+}
+
+/* ---- Story area ---- */
+#story-area {
+  padding: 3rem 4rem;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#story-box {
+  position: relative;
+  padding: 0;
+}
+
+#story-box::before {
+  content: '❧';
+  display: block;
+  font-size: 1.2rem;
+  color: var(--gold);
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+#story-text {
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text);
+  min-height: 5rem;
+}
+
+#story-text.loading {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+#story-text.loading::after {
+  content: '';
+  animation: ellipsis 1.2s steps(4, end) infinite;
+}
+
+@keyframes ellipsis {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+}
+
+#choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#choices button {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text);
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+#choices button::before {
+  content: attr(data-num);
+  position: absolute;
+  left: 1rem;
+  color: var(--gold);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#choices button:hover {
+  background: var(--surface-2);
+  border-color: var(--gold);
+  color: var(--text);
+  padding-left: 3rem;
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 700px) {
+  #game-body {
+    grid-template-columns: 1fr;
+  }
+
+  #history-panel {
+    display: none;
+  }
+
+  #story-area {
+    padding: 2rem 1.5rem;
+  }
+
+  #theme-buttons {
+    grid-template-columns: 1fr;
+  }
+}
