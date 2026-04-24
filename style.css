@@ -101,8 +101,6 @@ body {
    ========================================= */
 
 .screen {
-  position: absolute;
-  inset: 0;
   min-height: 100vh;
   opacity: 0;
   transform: translateY(20px) scale(0.98);
@@ -110,13 +108,21 @@ body {
     opacity var(--transition-screen),
     transform var(--transition-screen);
   pointer-events: none;
+  display: none;
 }
 
 .screen.active {
+  display: flex;
+  flex-direction: column;
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: all;
-  position: relative;
+}
+
+.screen.exit {
+  opacity: 0;
+  transform: translateY(-20px) scale(1.02);
+  pointer-events: none;
 }
 
 .screen.exit {
