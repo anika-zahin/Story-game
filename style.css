@@ -125,12 +125,6 @@ body {
   pointer-events: none;
 }
 
-.screen.exit {
-  opacity: 0;
-  transform: translateY(-20px) scale(1.02);
-  pointer-events: none;
-}
-
 /* =========================================
    THEME SCREEN
    ========================================= */
